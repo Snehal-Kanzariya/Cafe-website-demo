@@ -1,0 +1,52 @@
+---
+// Atmosphere / ambiance gallery
+const tiles = [
+  { label: 'Morning Light',   span: 'col-span-2 row-span-2', gradient: 'from-amber-950 via-stone-800 to-amber-900',     icon: '🌅', size: 'text-6xl' },
+  { label: 'Pour Over Bar',   span: 'col-span-1 row-span-1', gradient: 'from-stone-800 via-amber-900/60 to-stone-900',  icon: '☕', size: 'text-4xl' },
+  { label: 'Fresh Bakes',     span: 'col-span-1 row-span-1', gradient: 'from-amber-900/80 via-stone-800 to-stone-900',  icon: '🥐', size: 'text-4xl' },
+  { label: 'The Corner Seat', span: 'col-span-1 row-span-2', gradient: 'from-stone-900 via-amber-950/50 to-stone-800',  icon: '🪑', size: 'text-5xl' },
+  { label: 'Craft Latte',     span: 'col-span-1 row-span-1', gradient: 'from-amber-800/60 via-stone-800 to-amber-950',  icon: '🎨', size: 'text-4xl' },
+  { label: 'The Garden Patio',span: 'col-span-2 row-span-1', gradient: 'from-stone-800 via-amber-900/40 to-stone-950',  icon: '🌿', size: 'text-4xl' },
+];
+---
+
+<section id="gallery" class="bg-stone-950 py-24">
+  <div class="mx-auto max-w-7xl px-6">
+
+    <!-- Header -->
+    <div class="mb-16 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <p class="font-sans mb-4 text-xs font-medium tracking-[0.35em] text-amber-400 uppercase">
+          The Atmosphere
+        </p>
+        <h2 class="font-serif text-5xl font-bold text-stone-100 sm:text-6xl">
+          Our Spaces
+        </h2>
+      </div>
+      <p class="font-sans max-w-sm text-stone-500">
+        Designed for deep work, slow mornings, and lingering conversations.
+      </p>
+    </div>
+
+    <!-- Mosaic grid -->
+    <div class="grid h-[600px] grid-cols-4 grid-rows-3 gap-3 sm:h-[700px]">
+      {tiles.map(tile => (
+        <div
+          class={`${tile.span} group relative overflow-hidden rounded-2xl bg-gradient-to-br ${tile.gradient} cursor-pointer`}
+        >
+          <!-- Icon -->
+          <div class={`absolute inset-0 flex items-center justify-center ${tile.size} transition-transform duration-500 group-hover:scale-110`}>
+            {tile.icon}
+          </div>
+          <!-- Overlay label -->
+          <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-stone-950/80 to-transparent p-4 translate-y-2 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+            <p class="font-sans text-sm font-medium text-stone-200">{tile.label}</p>
+          </div>
+          <!-- Subtle border glow on hover -->
+          <div class="absolute inset-0 rounded-2xl border border-amber-500/0 transition-colors duration-300 group-hover:border-amber-500/20"></div>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>

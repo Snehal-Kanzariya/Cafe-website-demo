@@ -1,0 +1,92 @@
+---
+// Cafe story / about section
+---
+
+<section id="story" class="bg-stone-900/40 py-24">
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
+
+      <!-- Visual side -->
+      <div class="relative">
+        <!-- Main "image" card -->
+        <div class="relative h-[480px] overflow-hidden rounded-3xl bg-gradient-to-br from-amber-950 via-stone-800 to-amber-900">
+          <!-- Decorative grid overlay -->
+          <div
+            class="absolute inset-0 opacity-10"
+            style="background-image: linear-gradient(var(--color-stone-400) 1px, transparent 1px), linear-gradient(90deg, var(--color-stone-400) 1px, transparent 1px); background-size: 40px 40px;"
+          ></div>
+          <!-- Central icon -->
+          <div class="absolute inset-0 flex flex-col items-center justify-center gap-4">
+            <span class="text-8xl">☕</span>
+            <p class="font-serif text-2xl font-bold italic text-amber-400">Est. 2018</p>
+          </div>
+          <!-- Bottom gradient fade -->
+          <div class="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-stone-900/60 to-transparent"></div>
+        </div>
+
+        <!-- Floating stat card -->
+        <div class="absolute -bottom-6 -right-6 rounded-2xl border border-stone-700/50 bg-stone-900 p-6 shadow-2xl">
+          <p class="font-serif text-4xl font-bold text-amber-400">4.9</p>
+          <p class="font-sans mt-1 text-xs tracking-widest text-stone-400 uppercase">Guest Rating</p>
+          <div class="mt-2 flex gap-0.5 text-amber-400">
+            {'★★★★★'.split('').map(s => <span>{s}</span>)}
+          </div>
+        </div>
+
+        <!-- Floating origin card -->
+        <div class="absolute -left-6 top-8 rounded-2xl border border-stone-700/50 bg-stone-900 p-5 shadow-2xl">
+          <p class="font-sans text-xs font-semibold tracking-widest text-amber-400 uppercase">Sourced from</p>
+          <p class="font-serif mt-1 text-lg font-bold text-stone-100">Ethiopia · Kenya · Colombia</p>
+        </div>
+      </div>
+
+      <!-- Text side -->
+      <div class="space-y-8">
+        <div>
+          <p class="font-sans mb-4 text-xs font-medium tracking-[0.35em] text-amber-400 uppercase">Our Story</p>
+          <h2 class="font-serif text-5xl font-bold leading-tight text-stone-100 sm:text-6xl">
+            Coffee as a<br />
+            <span class="italic text-amber-400">craft.</span>
+          </h2>
+        </div>
+
+        <p class="font-sans text-lg leading-relaxed text-stone-400">
+          Brewed &amp; Co. was born from a simple conviction: that coffee, made with intention
+          and care, can anchor your day. We roast weekly in small batches, source directly
+          from farmers we know by name, and train every barista to treat each cup as a
+          singular act of hospitality.
+        </p>
+
+        <p class="font-sans leading-relaxed text-stone-500">
+          Our kitchen runs on the same philosophy — seasonal ingredients, recipes refined
+          over years, nothing wasted. Every croissant laminated by hand. Every pastry
+          baked before dawn.
+        </p>
+
+        <div class="flex flex-wrap gap-8 border-t border-stone-800 pt-8">
+          {[
+            { value: '12',    label: 'Origin partners' },
+            { value: 'Daily', label: 'Fresh roast' },
+            { value: '100%',  label: 'Ethical sourcing' },
+          ].map(s => (
+            <div>
+              <p class="font-serif text-2xl font-bold text-amber-400">{s.value}</p>
+              <p class="font-sans mt-1 text-xs tracking-widest text-stone-500 uppercase">{s.label}</p>
+            </div>
+          ))}
+        </div>
+
+        <a
+          href="#menu"
+          class="font-sans inline-flex items-center gap-2 text-sm font-medium text-amber-400 transition-colors hover:text-amber-300"
+        >
+          Browse the full menu
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+          </svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>

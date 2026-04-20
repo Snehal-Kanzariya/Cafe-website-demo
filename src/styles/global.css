@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+}
+
+/* ── Grid entry animation ────────────────────── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Overlay idle float (after FLIP lands) ───── */
+@keyframes floatIdle {
+  0%, 100% { transform: translateY(0px);   }
+  50%       { transform: translateY(-10px); }
+}
+
+.is-floating {
+  animation: floatIdle 3.2s ease-in-out infinite;
+}
+
+/* ── Card click ripple ───────────────────────── */
+@keyframes cardPulse {
+  0%   { box-shadow: 0 0 0 0   color-mix(in srgb, #f59e0b 60%, transparent); }
+  70%  { box-shadow: 0 0 0 10px color-mix(in srgb, #f59e0b 0%,  transparent); }
+  100% { box-shadow: 0 0 0 0   color-mix(in srgb, #f59e0b 0%,  transparent); }
+}
+
+.card-pulse {
+  animation: cardPulse 0.45s ease-out forwards;
+}
+
+/* ── Image placeholders (per category) ──────── */
+.img-placeholder[data-cat="coffee"]           { background: linear-gradient(135deg, #3d2308, #78350f, #451a03); }
+.img-placeholder[data-cat="signature-drinks"] { background: linear-gradient(135deg, #2e1065, #7c3aed, #1e1b4b); }
+.img-placeholder[data-cat="bakery"]           { background: linear-gradient(135deg, #451a03, #b45309, #78350f); }
+.img-placeholder[data-cat="desserts"]         { background: linear-gradient(135deg, #4c0519, #9f1239, #7f1d1d); }
+.img-placeholder[data-cat="light-bites"]      { background: linear-gradient(135deg, #14532d, #166534, #052e16); }

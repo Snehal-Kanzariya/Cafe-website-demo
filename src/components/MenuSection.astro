@@ -1,0 +1,375 @@
+---
+import MenuCard from './MenuCard.astro';
+import { menuItems, categories } from '@/data/menu';
+---
+
+<section id="menu" class="bg-stone-950 py-24">
+  <div class="mx-auto max-w-7xl px-6">
+
+    <div class="mb-16 text-center">
+      <p class="font-sans mb-4 text-xs font-medium tracking-[0.35em] text-amber-400 uppercase">
+        Our Offerings
+      </p>
+      <h2 class="font-serif mb-4 text-5xl font-bold text-stone-100 sm:text-6xl">
+        The Menu
+      </h2>
+      <p class="font-sans text-lg text-stone-500">
+        Tap any item for a closer look
+      </p>
+    </div>
+
+    <!-- Category tabs -->
+    <div id="category-tabs" class="mb-12 flex flex-wrap justify-center gap-2">
+      <button class="cat-tab active" data-filter="all">All</button>
+      {categories.map(cat => (
+        <button class="cat-tab" data-filter={cat.id}>
+          <span aria-hidden="true">{cat.emoji}</span>
+          <span>{cat.label}</span>
+        </button>
+      ))}
+    </div>
+
+    <!-- Menu grid -->
+    <div id="menu-grid" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {menuItems.map(item => (
+        <div class="menu-item-wrapper" data-category={item.category}>
+          <MenuCard item={item} />
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>
+
+<!-- ── FLIP overlay (singleton) ─────────────────────────────────── -->
+<!--
+  Starts display:none. JS manages display directly so we can
+  measure the overlay card's natural centered position before animating.
+-->
+<div
+  id="menu-overlay"
+  style="display:none"
+  class="fixed inset-0 z-50 flex items-center justify-center p-4"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="overlay-name"
+>
+  <!-- Backdrop — separate so it fades in independently -->
+  <div
+    id="overlay-backdrop"
+    class="absolute inset-0 bg-stone-950/75 backdrop-blur-lg"
+    style="opacity:0"
+  ></div>
+
+  <!-- The card that performs the FLIP journey -->
+  <div
+    id="overlay-card"
+    class="relative w-full max-w-md overflow-hidden rounded-3xl border border-stone-700/40 bg-stone-900 shadow-2xl shadow-black/70"
+    style="opacity:0"
+  >
+    <!-- Image block -->
+    <div class="relative h-72 overflow-hidden">
+      <div id="overlay-placeholder" class="img-placeholder absolute inset-0"></div>
+      <img
+        id="overlay-img"
+        src=""
+        alt=""
+        class="absolute inset-0 h-full w-full object-cover"
+        style="opacity:0; transform:scale(1.06); transition:opacity 0.45s ease;"
+      />
+      <!-- Bottom gradient fade so text overlaps nicely -->
+      <div class="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-stone-900 to-transparent"></div>
+    </div>
+
+    <!-- Close button -->
+    <button
+      id="overlay-close"
+      class="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full border border-stone-700/60 bg-stone-950/80 text-stone-400 backdrop-blur-sm transition-all duration-200 hover:border-stone-500 hover:text-white"
+      aria-label="Close preview"
+    >
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+        <line x1="1" y1="1" x2="11" y2="11"/>
+        <line x1="11" y1="1" x2="1" y2="11"/>
+      </svg>
+    </button>
+
+    <!-- Text content — overlaps image slightly -->
+    <div class="relative -mt-5 px-7 pb-7">
+      <!-- Category + badge row -->
+      <div class="mb-3 flex flex-wrap items-center gap-2">
+        <span id="overlay-category-label" class="font-sans rounded-full bg-stone-800 px-2.5 py-0.5 text-xs font-medium text-stone-400"></span>
+        <span id="overlay-badge" class="font-sans hidden rounded-full border px-2.5 py-0.5 text-xs font-semibold"></span>
+      </div>
+
+      <!-- Name + price -->
+      <div class="mb-3 flex items-start justify-between gap-4">
+        <h3 id="overlay-name" class="font-serif text-2xl font-bold leading-tight text-stone-100"></h3>
+        <span id="overlay-price" class="font-sans mt-0.5 shrink-0 text-xl font-bold text-amber-400"></span>
+      </div>
+
+      <!-- Description -->
+      <p id="overlay-desc" class="font-sans mb-6 text-sm leading-relaxed text-stone-400 sm:text-base"></p>
+
+      <!-- CTA -->
+      <a
+        href="#reservation"
+        id="overlay-cta"
+        class="font-sans block w-full rounded-full bg-amber-500 py-3.5 text-center text-sm font-semibold text-stone-950 transition-all duration-200 hover:scale-[1.02] hover:bg-amber-400 hover:shadow-lg hover:shadow-amber-500/25"
+      >
+        Reserve &amp; Order →
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ── Category tabs ───────────────────────────── */
+  .cat-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.5rem 1.25rem;
+    border-radius: 9999px;
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: 1px solid var(--color-stone-800);
+    color: var(--color-stone-400);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .cat-tab:hover {
+    border-color: color-mix(in srgb, var(--color-amber-500) 50%, transparent);
+    color: var(--color-amber-400);
+  }
+
+  .cat-tab.active {
+    background: var(--color-amber-500);
+    border-color: var(--color-amber-500);
+    color: var(--color-stone-950);
+    font-weight: 600;
+  }
+
+  /* ── Grid item entry animation ───────────────── */
+  .menu-item-wrapper {
+    animation: fadeInUp 0.35s ease both;
+  }
+</style>
+
+<script>
+  // Card thumbnail reveal is handled by MenuCard.astro's deduplicated script.
+
+  // ─────────────────────────────────────────────────────────────
+  //  Element refs
+  // ─────────────────────────────────────────────────────────────
+  const overlay        = document.getElementById('menu-overlay')!         as HTMLElement;
+  const overlayCard    = document.getElementById('overlay-card')!         as HTMLElement;
+  const overlayBdrop   = document.getElementById('overlay-backdrop')!     as HTMLElement;
+  const overlayClose   = document.getElementById('overlay-close')!        as HTMLElement;
+  const overlayImg     = document.getElementById('overlay-img')!          as HTMLImageElement;
+  const overlayPholder = document.getElementById('overlay-placeholder')!  as HTMLElement;
+  const overlayName    = document.getElementById('overlay-name')!         as HTMLElement;
+  const overlayPrice   = document.getElementById('overlay-price')!        as HTMLElement;
+  const overlayDesc    = document.getElementById('overlay-desc')!         as HTMLElement;
+  const overlayCatLbl  = document.getElementById('overlay-category-label')! as HTMLElement;
+  const overlayBadge   = document.getElementById('overlay-badge')!        as HTMLElement;
+
+  // ─────────────────────────────────────────────────────────────
+  //  FLIP state — saved on open, replayed on close
+  // ─────────────────────────────────────────────────────────────
+  let flipDelta = { x: 0, y: 0, scaleX: 1, scaleY: 1 };
+  let animating = false;
+
+  // ─────────────────────────────────────────────────────────────
+  //  Badge style map (matches MenuCard)
+  // ─────────────────────────────────────────────────────────────
+  const badgeStyles: Record<string, string> = {
+    'Popular':     'bg-amber-500/15 text-amber-400 border-amber-500/25 border',
+    'New':         'bg-emerald-500/15 text-emerald-400 border-emerald-500/25 border',
+    "Chef's Pick": 'bg-rose-500/15 text-rose-400 border-rose-500/25 border',
+  };
+
+  // ─────────────────────────────────────────────────────────────
+  //  openPreview — FLIP in
+  //
+  //  FLIP algorithm:
+  //  F — measure card (First position)
+  //  L — show overlay invisibly, measure overlay card (Last position)
+  //  I — apply inverse transform to overlay card (snap it to First)
+  //  P — remove transform with a transition (Play forward to Last)
+  // ─────────────────────────────────────────────────────────────
+  function openPreview(card: HTMLElement) {
+    if (animating) return;
+    animating = true;
+
+    const {
+      name = '', description = '', price = '',
+      image = '', category = '', badge = '',
+      categoryLabel = '',
+    } = card.dataset;
+
+    // 1. Populate overlay content
+    overlayName.textContent  = name;
+    overlayPrice.textContent = `$${parseFloat(price).toFixed(2)}`;
+    overlayDesc.textContent  = description;
+    overlayCatLbl.textContent = categoryLabel;
+    overlayPholder.setAttribute('data-cat', category);
+
+    // Reset overlay image via inline style (immune to CSS class conflicts)
+    overlayImg.style.opacity    = '0';
+    overlayImg.style.transition = 'opacity 0.45s ease';
+    if (image) {
+      overlayImg.src = image;
+      overlayImg.alt = name;
+      const revealOverlay = () => requestAnimationFrame(() => { overlayImg.style.opacity = '1'; });
+      overlayImg.complete && overlayImg.naturalWidth > 0
+        ? revealOverlay()
+        : overlayImg.addEventListener('load', revealOverlay, { once: true });
+    }
+
+    if (badge) {
+      overlayBadge.textContent = badge;
+      overlayBadge.className = `font-sans rounded-full px-2.5 py-0.5 text-xs font-semibold ${badgeStyles[badge] ?? 'bg-stone-700/80 text-stone-300'}`;
+      overlayBadge.style.display = '';
+    } else {
+      overlayBadge.style.display = 'none';
+    }
+
+    // F — measure card's bounding rect (First)
+    const cardRect = card.getBoundingClientRect();
+
+    // Ripple feedback on the source card
+    card.classList.add('card-pulse');
+    card.addEventListener('animationend', () => card.classList.remove('card-pulse'), { once: true });
+
+    // L — show overlay invisibly to get its natural centered position (Last)
+    overlay.style.visibility = 'hidden';
+    overlay.style.display    = 'flex';
+    void overlay.offsetWidth; // flush layout so getBoundingClientRect is valid
+
+    const finalRect = overlayCard.getBoundingClientRect();
+
+    // I — compute inverse transform
+    const dx     = (cardRect.left + cardRect.width  / 2) - (finalRect.left + finalRect.width  / 2);
+    const dy     = (cardRect.top  + cardRect.height / 2) - (finalRect.top  + finalRect.height / 2);
+    const scaleX = cardRect.width  / finalRect.width;
+    const scaleY = cardRect.height / finalRect.height;
+    flipDelta = { x: dx, y: dy, scaleX, scaleY };
+
+    // Apply start state (at card's exact position + size)
+    overlayCard.style.transition   = 'none';
+    overlayCard.style.transform    = `translate(${dx}px, ${dy}px) scale(${scaleX}, ${scaleY})`;
+    overlayCard.style.opacity      = '0';
+    overlayCard.style.borderRadius = '1rem'; // card is rounded-2xl ≈ 1rem
+
+    overlayBdrop.style.transition = 'none';
+    overlayBdrop.style.opacity    = '0';
+
+    // Make visible, lock scroll
+    overlay.style.visibility = '';
+    document.body.style.overflow = 'hidden';
+
+    // Force reflow to commit start state
+    void overlayCard.offsetWidth;
+
+    // P — play forward: animate from card position to center
+    overlayCard.style.transition   = 'transform 0.52s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.35s ease, border-radius 0.52s ease';
+    overlayCard.style.transform    = 'translate(0, 0) scale(1)';
+    overlayCard.style.opacity      = '1';
+    overlayCard.style.borderRadius = '1.5rem'; // overlay is rounded-3xl ≈ 1.5rem
+
+    overlayBdrop.style.transition = 'opacity 0.35s ease';
+    overlayBdrop.style.opacity    = '1';
+
+    // After FLIP lands: hand off to CSS float-idle animation
+    setTimeout(() => {
+      overlayCard.style.transition   = '';
+      overlayCard.style.transform    = '';
+      overlayCard.style.borderRadius = '';
+      overlayCard.classList.add('is-floating');
+      animating = false;
+    }, 550);
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  //  closePreview — reverse FLIP out
+  // ─────────────────────────────────────────────────────────────
+  function closePreview() {
+    if (animating) return;
+    animating = true;
+
+    // Stop floating idle — snap back to a known transform
+    overlayCard.classList.remove('is-floating');
+    overlayCard.style.transition   = 'none';
+    overlayCard.style.transform    = 'translate(0, 0) scale(1)';
+    overlayCard.style.opacity      = '1';
+    overlayCard.style.borderRadius = '1.5rem';
+    void overlayCard.offsetWidth; // flush
+
+    // Reverse FLIP
+    const { x: dx, y: dy, scaleX, scaleY } = flipDelta;
+    overlayCard.style.transition   = 'transform 0.38s cubic-bezier(0.4, 0, 1, 1), opacity 0.26s ease, border-radius 0.38s ease';
+    overlayCard.style.transform    = `translate(${dx}px, ${dy}px) scale(${scaleX}, ${scaleY})`;
+    overlayCard.style.opacity      = '0';
+    overlayCard.style.borderRadius = '1rem';
+
+    overlayBdrop.style.transition = 'opacity 0.26s ease';
+    overlayBdrop.style.opacity    = '0';
+
+    // After reverse animation: hide & clean up
+    setTimeout(() => {
+      overlay.style.display          = 'none';
+      overlay.style.visibility       = '';
+      overlayCard.style.transition   = '';
+      overlayCard.style.transform    = '';
+      overlayCard.style.opacity      = '0'; // keep hidden for next open
+      overlayCard.style.borderRadius = '';
+      overlayBdrop.style.transition  = '';
+      overlayBdrop.style.opacity     = '';
+      document.body.style.overflow   = '';
+      animating = false;
+    }, 400);
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  //  Event listeners
+  // ─────────────────────────────────────────────────────────────
+  document.querySelectorAll<HTMLElement>('.menu-card').forEach(card => {
+    card.addEventListener('click', () => openPreview(card));
+  });
+
+  overlayBdrop.addEventListener('click',  closePreview);
+  overlayClose.addEventListener('click',  closePreview);
+  document.getElementById('overlay-cta')!.addEventListener('click', closePreview);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closePreview(); });
+
+  // ─────────────────────────────────────────────────────────────
+  //  Category filter
+  // ─────────────────────────────────────────────────────────────
+  const tabs     = document.querySelectorAll<HTMLElement>('.cat-tab');
+  const wrappers = document.querySelectorAll<HTMLElement>('.menu-item-wrapper');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const filter = tab.dataset.filter!;
+
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+
+      wrappers.forEach(w => {
+        const show = filter === 'all' || w.dataset.category === filter;
+        if (show) {
+          w.style.display = '';
+          // re-trigger entry animation
+          w.style.animation = 'none';
+          void w.offsetWidth;
+          w.style.animation = '';
+        } else {
+          w.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>

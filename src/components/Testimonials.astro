@@ -1,0 +1,110 @@
+---
+const reviews = [
+  {
+    name: 'Priya Nair',
+    handle: '@priya.eats',
+    rating: 5,
+    text: "The honey lavender latte is unlike anything I've had anywhere in the city. The space is warm, the staff remember your name — this is what a neighbourhood cafe should feel like.",
+    initials: 'PN',
+    color: 'bg-amber-500',
+  },
+  {
+    name: 'Marcus Webb',
+    handle: '@marcuswebb',
+    rating: 5,
+    text: "I've been hunting for a proper pour over in this city for years. Brewed & Co. absolutely nails it — Kenyan AA, clean technique, served at the right temperature. I'm a regular now.",
+    initials: 'MW',
+    color: 'bg-stone-600',
+  },
+  {
+    name: 'Sofia Delacroix',
+    handle: '@sofiatravels',
+    rating: 5,
+    text: "The almond croissant here is criminally good. Frangipane perfectly balanced, not too sweet. The Basque cheesecake might be the best dessert I've eaten this year. Do not skip dessert.",
+    initials: 'SD',
+    color: 'bg-rose-700',
+  },
+  {
+    name: 'James Okonkwo',
+    handle: '@jamesonwine',
+    rating: 5,
+    text: "Remote-worked from here three days straight. Great wifi, unhurried atmosphere, and nobody rushing you out. The flat white kept me going — just the right amount of kick.",
+    initials: 'JO',
+    color: 'bg-emerald-700',
+  },
+  {
+    name: 'Chloe Tanaka',
+    handle: '@chloebakes',
+    rating: 5,
+    text: "As a pastry chef myself, I'm very critical of cafe bakes. The cardamom bun here has proper lamination and a real cardamom flavour — not just sugar. Impressed every single time.",
+    initials: 'CT',
+    color: 'bg-violet-700',
+  },
+  {
+    name: 'Ravi Mehta',
+    handle: '@ravithecoder',
+    rating: 5,
+    text: "Stumbled in during a rainy afternoon and ended up staying four hours. The ceremonial matcha and the mezze board are my order now. Always feels like a treat.",
+    initials: 'RM',
+    color: 'bg-amber-700',
+  },
+];
+---
+
+<section id="testimonials" class="bg-stone-900/30 py-24">
+  <div class="mx-auto max-w-7xl px-6">
+
+    <!-- Header -->
+    <div class="mb-16 text-center">
+      <p class="font-sans mb-4 text-xs font-medium tracking-[0.35em] text-amber-400 uppercase">
+        Guest Reviews
+      </p>
+      <h2 class="font-serif text-5xl font-bold text-stone-100 sm:text-6xl">
+        Regulars say it best
+      </h2>
+    </div>
+
+    <!-- Review grid -->
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {reviews.map(r => (
+        <div class="group flex flex-col gap-5 rounded-2xl border border-stone-800/60 bg-stone-900/50 p-7 transition-all duration-300 hover:border-amber-500/30 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-stone-950/60">
+
+          <!-- Stars -->
+          <div class="flex gap-0.5 text-amber-400 text-sm">
+            {'★★★★★'.split('').map(s => <span>{s}</span>)}
+          </div>
+
+          <!-- Quote text -->
+          <p class="font-sans flex-1 text-sm leading-relaxed text-stone-300">
+            "{r.text}"
+          </p>
+
+          <!-- Reviewer -->
+          <div class="flex items-center gap-3 border-t border-stone-800 pt-5">
+            <div class={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${r.color} font-sans text-xs font-bold text-white`}>
+              {r.initials}
+            </div>
+            <div>
+              <p class="font-sans text-sm font-semibold text-stone-200">{r.name}</p>
+              <p class="font-sans text-xs text-stone-500">{r.handle}</p>
+            </div>
+          </div>
+
+        </div>
+      ))}
+    </div>
+
+    <!-- Summary bar -->
+    <div class="mt-16 flex flex-wrap items-center justify-center gap-8 rounded-2xl border border-stone-800/40 bg-stone-900/30 px-8 py-6">
+      <div class="text-center">
+        <p class="font-serif text-4xl font-bold text-amber-400">4.9</p>
+        <div class="mt-1 flex gap-0.5 justify-center text-amber-400">★★★★★</div>
+      </div>
+      <div class="hidden h-10 w-px bg-stone-800 sm:block"></div>
+      <p class="font-sans text-sm text-stone-400 max-w-xs">
+        Based on <strong class="text-stone-200">840+ reviews</strong> across Google, Yelp, and direct feedback.
+      </p>
+    </div>
+
+  </div>
+</section>
