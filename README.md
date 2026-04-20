@@ -1,46 +1,127 @@
-# Astro Starter Kit: Basics
+# Brewed & Co. — Premium Artisan Cafe Demo
 
-```sh
-npm create astro@latest -- --template basics
+A fully interactive cafe website built with **Astro v6** and **Tailwind CSS v4**. Features rich animations, a filterable menu with FLIP card previews, 3-D card tilt effects, and a dark premium aesthetic throughout.
+
+---
+
+## Screenshots
+
+### Hero
+![Hero](./screenshots/hero.png)
+
+### Menu
+![Menu](./screenshots/menu.png)
+
+### Gallery
+![Gallery](./screenshots/gallery.png)
+
+### Our Story
+![Story](./screenshots/story.png)
+
+### Guest Reviews
+![Testimonials](./screenshots/testimonials.png)
+
+### Reservation
+![Reservation](./screenshots/reservation.png)
+
+---
+
+## Tech Stack
+
+| Layer | Tool |
+|---|---|
+| Framework | [Astro v6](https://astro.build) |
+| Styling | [Tailwind CSS v4](https://tailwindcss.com) (Vite plugin) |
+| Fonts | Playfair Display · Inter (Google Fonts) |
+| Animations | Vanilla JS + CSS keyframes |
+| Images | Generated via `sharp` (Astro transitive dep) |
+| Language | TypeScript |
+
+---
+
+## Features
+
+- **FLIP card preview** — clicking any menu card animates it to a full-screen overlay using the First/Last/Invert/Play technique; no layout thrash, GPU-composited
+- **3-D card tilt** — mouse-tracking perspective tilt with a specular shine layer on every menu card
+- **Floating coffee beans** — CSS-only ambient animation in the hero background using per-bean custom properties (`--drift`, `--op`, `--sr`, `--er`)
+- **Category filter** — tab bar filters the menu grid with a re-triggered `fadeInUp` entry animation on each reveal
+- **Lazy image reveal** — photos fade in with a subtle zoom using inline-style transitions (immune to Tailwind class specificity conflicts)
+- **Scroll-smooth navigation** — all section anchors use native CSS `scroll-behavior: smooth`
+- **Responsive layout** — 1 → 2 → 3 → 4 column menu grid; mobile-first throughout
+- **Custom favicon** — SVG coffee cup + multi-resolution `.ico` (16 / 32 / 48 px)
+
+---
+
+## Project Structure
+
 ```
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
+cafe-demo/
 ├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+│   ├── favicon.svg          # SVG favicon (coffee cup)
+│   ├── favicon.ico          # Multi-res ICO (16/32/48px)
+│   └── images/menu/         # 19 generated JPEG menu photos
+├── scripts/
+│   ├── generate-menu-images.mjs   # Generates menu JPEGs via sharp
+│   ├── generate-favicon-ico.mjs   # Builds favicon.ico from SVG
+│   └── screenshot.mjs             # CDP-based section screenshots
+├── src/
+│   ├── components/
+│   │   ├── Hero.astro
+│   │   ├── MenuSection.astro  # FLIP overlay + category filter
+│   │   ├── MenuCard.astro     # 3-D tilt + image reveal
+│   │   ├── Gallery.astro
+│   │   ├── Story.astro
+│   │   ├── Testimonials.astro
+│   │   ├── CTA.astro
+│   │   └── Footer.astro
+│   ├── data/
+│   │   └── menu.ts            # 19 menu items across 5 categories
+│   ├── layouts/
+│   │   └── Layout.astro
+│   ├── pages/
+│   │   └── index.astro
+│   └── styles/
+│       └── global.css         # @theme tokens + keyframes
+├── astro.config.mjs
+└── tsconfig.json
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+---
 
-## 🧞 Commands
+## Getting Started
 
-All commands are run from the root of the project, from a terminal:
+```bash
+# Install dependencies
+npm install
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+# Start dev server
+npm run dev
 
-## 👀 Want to learn more?
+# Build for production
+npm run build
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+# Preview production build
+npm run preview
+```
+
+### Regenerate assets (optional)
+
+```bash
+# Regenerate the 19 menu placeholder images
+node scripts/generate-menu-images.mjs
+
+# Regenerate favicon.ico from public/favicon.svg
+node scripts/generate-favicon-ico.mjs
+```
+
+---
+
+## Menu Categories
+
+| Category | Items |
+|---|---|
+| ☕ Coffee | Espresso Classico, Cortado, Pour Over, Cold Brew, Flat White |
+| ✨ Signature | Honey Lavender Latte, Golden Turmeric Latte, Rose Cardamom Chai, Ceremonial Matcha |
+| 🥐 Bakery | Butter Croissant, Almond Croissant, Cardamom Bun, Sourdough Toast |
+| 🍰 Desserts | Espresso Tiramisu, Basque Burnt Cheesecake, Brown Butter Financier |
+| 🥗 Light Bites | Smashed Avocado Toast, Quiche Lorraine, Mezze Board |
